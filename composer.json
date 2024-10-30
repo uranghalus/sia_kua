@@ -1,0 +1,12 @@
+{
+    "name": "unggara/kua-app",
+    "description": "Aplikasi Administrasi KUA",
+    "authors": [
+        {
+            "name": "unggara"
+        }
+    ],
+    "require": {
+        "mpdf/mpdf": "v7.1.7"
+    }
+}

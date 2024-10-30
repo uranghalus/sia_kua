@@ -1,0 +1,11 @@
+Konsultasi 27-02-2023
+
+^	Data rekomendasi nikah yang muncul hanya yg login
+
+^	Data pembayaran menampilkan foto admin
+
+^	Nik, alamat penghulu, nama, no.hp
+
+^	Menhilangkan pada tombol pencarian di masyarakt
+
+^	Perbaikan srt rekomendasi nikah
