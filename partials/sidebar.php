@@ -63,6 +63,12 @@
                     <span>Pendaftaran Nikah</span>
                 </a>
             </li>
+            <li <?php if ($page == "Bimbingan Pranikah") : ?>class="active" <?php endif ?>>
+                <a href="dashboard?pages=pranikah">
+                    <i class="fa fa-book"></i>
+                    <span>Bimbingan Pranikah</span>
+                </a>
+            </li>
             <li <?php if ($page == "Rekomendasi Nikah") : ?>class="active" <?php endif ?>>
                 <a href="dashboard?pages=rekomendasi">
                     <i class="fa fa-envelope"></i>

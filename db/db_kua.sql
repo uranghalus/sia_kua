@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 03 Mar 2023 pada 14.51
--- Versi server: 10.4.18-MariaDB
--- Versi PHP: 7.3.27
+-- Generation Time: Oct 30, 2024 at 03:30 PM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 7.3.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,69 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `master_kua`
+-- Table structure for table `bimbingan`
+--
+
+CREATE TABLE `bimbingan` (
+  `id` int(11) NOT NULL,
+  `nama_bimbingan` varchar(100) NOT NULL,
+  `deskripsi` text DEFAULT NULL,
+  `tanggal_mulai` date DEFAULT NULL,
+  `tanggal_selesai` date DEFAULT NULL,
+  `lokasi` varchar(255) DEFAULT NULL,
+  `kuota` int(11) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feedback_bimbingan`
+--
+
+CREATE TABLE `feedback_bimbingan` (
+  `id` int(11) NOT NULL,
+  `bimbingan_id` int(11) DEFAULT NULL,
+  `peserta_id` int(11) DEFAULT NULL,
+  `rating` int(11) DEFAULT NULL CHECK (`rating` between 1 and 5),
+  `komentar` text DEFAULT NULL,
+  `tanggal_feedback` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jadwal_bimbingan`
+--
+
+CREATE TABLE `jadwal_bimbingan` (
+  `id` int(11) NOT NULL,
+  `bimbingan_id` int(11) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  `waktu_mulai` time DEFAULT NULL,
+  `waktu_selesai` time DEFAULT NULL,
+  `lokasi` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kehadiran_peserta`
+--
+
+CREATE TABLE `kehadiran_peserta` (
+  `id` int(11) NOT NULL,
+  `jadwal_id` int(11) DEFAULT NULL,
+  `peserta_id` int(11) DEFAULT NULL,
+  `status_kehadiran` enum('hadir','tidak hadir','izin') DEFAULT 'hadir',
+  `catatan` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `master_kua`
 --
 
 CREATE TABLE `master_kua` (
@@ -34,7 +96,7 @@ CREATE TABLE `master_kua` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `master_kua`
+-- Dumping data for table `master_kua`
 --
 
 INSERT INTO `master_kua` (`id_`, `nama_kua`, `alamat`) VALUES
@@ -45,7 +107,20 @@ INSERT INTO `master_kua` (`id_`, `nama_kua`, `alamat`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_bukti_pembayaran`
+-- Table structure for table `materi_bimbingan`
+--
+
+CREATE TABLE `materi_bimbingan` (
+  `id` int(11) NOT NULL,
+  `bimbingan_id` int(11) DEFAULT NULL,
+  `judul_materi` varchar(100) NOT NULL,
+  `deskripsi` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_bukti_pembayaran`
 --
 
 CREATE TABLE `tbl_bukti_pembayaran` (
@@ -60,7 +135,7 @@ CREATE TABLE `tbl_bukti_pembayaran` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_daftar_nikah`
+-- Table structure for table `tbl_daftar_nikah`
 --
 
 CREATE TABLE `tbl_daftar_nikah` (
@@ -102,7 +177,7 @@ CREATE TABLE `tbl_daftar_nikah` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_jadwal`
+-- Table structure for table `tbl_jadwal`
 --
 
 CREATE TABLE `tbl_jadwal` (
@@ -121,7 +196,7 @@ CREATE TABLE `tbl_jadwal` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_penerimaan_pendaftaran`
+-- Table structure for table `tbl_penerimaan_pendaftaran`
 --
 
 CREATE TABLE `tbl_penerimaan_pendaftaran` (
@@ -134,7 +209,7 @@ CREATE TABLE `tbl_penerimaan_pendaftaran` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_penghulu`
+-- Table structure for table `tbl_penghulu`
 --
 
 CREATE TABLE `tbl_penghulu` (
@@ -146,7 +221,7 @@ CREATE TABLE `tbl_penghulu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `tbl_penghulu`
+-- Dumping data for table `tbl_penghulu`
 --
 
 INSERT INTO `tbl_penghulu` (`Nip`, `nama_penghulu`, `foto`, `alamat_penghulu`, `telpon_penghulu`) VALUES
@@ -155,7 +230,7 @@ INSERT INTO `tbl_penghulu` (`Nip`, `nama_penghulu`, `foto`, `alamat_penghulu`, `
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_penolakan`
+-- Table structure for table `tbl_penolakan`
 --
 
 CREATE TABLE `tbl_penolakan` (
@@ -170,7 +245,7 @@ CREATE TABLE `tbl_penolakan` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_pesan`
+-- Table structure for table `tbl_pesan`
 --
 
 CREATE TABLE `tbl_pesan` (
@@ -187,7 +262,7 @@ CREATE TABLE `tbl_pesan` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_rekomendasi`
+-- Table structure for table `tbl_rekomendasi`
 --
 
 CREATE TABLE `tbl_rekomendasi` (
@@ -203,7 +278,7 @@ CREATE TABLE `tbl_rekomendasi` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_user`
+-- Table structure for table `tbl_user`
 --
 
 CREATE TABLE `tbl_user` (
@@ -214,7 +289,7 @@ CREATE TABLE `tbl_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `tbl_user`
+-- Dumping data for table `tbl_user`
 --
 
 INSERT INTO `tbl_user` (`nik`, `email`, `password`, `level`) VALUES
@@ -223,7 +298,7 @@ INSERT INTO `tbl_user` (`nik`, `email`, `password`, `level`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `user_detail`
+-- Table structure for table `user_detail`
 --
 
 CREATE TABLE `user_detail` (
@@ -235,7 +310,7 @@ CREATE TABLE `user_detail` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `user_detail`
+-- Dumping data for table `user_detail`
 --
 
 INSERT INTO `user_detail` (`id`, `nik`, `nama`, `alamat`, `pekerjaan`) VALUES
@@ -247,89 +322,149 @@ INSERT INTO `user_detail` (`id`, `nik`, `nama`, `alamat`, `pekerjaan`) VALUES
 --
 
 --
--- Indeks untuk tabel `master_kua`
+-- Indexes for table `bimbingan`
+--
+ALTER TABLE `bimbingan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `feedback_bimbingan`
+--
+ALTER TABLE `feedback_bimbingan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `jadwal_bimbingan`
+--
+ALTER TABLE `jadwal_bimbingan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `kehadiran_peserta`
+--
+ALTER TABLE `kehadiran_peserta`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `master_kua`
 --
 ALTER TABLE `master_kua`
   ADD PRIMARY KEY (`id_`);
 
 --
--- Indeks untuk tabel `tbl_bukti_pembayaran`
+-- Indexes for table `materi_bimbingan`
+--
+ALTER TABLE `materi_bimbingan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_bukti_pembayaran`
 --
 ALTER TABLE `tbl_bukti_pembayaran`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `tbl_daftar_nikah`
+-- Indexes for table `tbl_daftar_nikah`
 --
 ALTER TABLE `tbl_daftar_nikah`
   ADD PRIMARY KEY (`id_daftar`);
 
 --
--- Indeks untuk tabel `tbl_jadwal`
+-- Indexes for table `tbl_jadwal`
 --
 ALTER TABLE `tbl_jadwal`
   ADD PRIMARY KEY (`id_jadwal`);
 
 --
--- Indeks untuk tabel `tbl_penerimaan_pendaftaran`
+-- Indexes for table `tbl_penerimaan_pendaftaran`
 --
 ALTER TABLE `tbl_penerimaan_pendaftaran`
   ADD PRIMARY KEY (`nomor_surat_penerimaan`);
 
 --
--- Indeks untuk tabel `tbl_penghulu`
+-- Indexes for table `tbl_penghulu`
 --
 ALTER TABLE `tbl_penghulu`
   ADD PRIMARY KEY (`Nip`);
 
 --
--- Indeks untuk tabel `tbl_penolakan`
+-- Indexes for table `tbl_penolakan`
 --
 ALTER TABLE `tbl_penolakan`
   ADD PRIMARY KEY (`id_penolakan`);
 
 --
--- Indeks untuk tabel `tbl_pesan`
+-- Indexes for table `tbl_pesan`
 --
 ALTER TABLE `tbl_pesan`
   ADD PRIMARY KEY (`id_k`);
 
 --
--- Indeks untuk tabel `tbl_rekomendasi`
+-- Indexes for table `tbl_rekomendasi`
 --
 ALTER TABLE `tbl_rekomendasi`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `tbl_user`
+-- Indexes for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
   ADD PRIMARY KEY (`nik`);
 
 --
--- Indeks untuk tabel `user_detail`
+-- Indexes for table `user_detail`
 --
 ALTER TABLE `user_detail`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `master_kua`
+-- AUTO_INCREMENT for table `bimbingan`
+--
+ALTER TABLE `bimbingan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `feedback_bimbingan`
+--
+ALTER TABLE `feedback_bimbingan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `jadwal_bimbingan`
+--
+ALTER TABLE `jadwal_bimbingan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `kehadiran_peserta`
+--
+ALTER TABLE `kehadiran_peserta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `master_kua`
 --
 ALTER TABLE `master_kua`
   MODIFY `id_` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `tbl_pesan`
+-- AUTO_INCREMENT for table `materi_bimbingan`
+--
+ALTER TABLE `materi_bimbingan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbl_pesan`
 --
 ALTER TABLE `tbl_pesan`
   MODIFY `id_k` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT untuk tabel `user_detail`
+-- AUTO_INCREMENT for table `user_detail`
 --
 ALTER TABLE `user_detail`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;

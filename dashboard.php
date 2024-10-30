@@ -15,6 +15,9 @@ if (isset($_GET['pages'])) {
     } elseif ($_GET['pages'] == "pendaftaran") {
         $page = "Pendaftaran Nikah";
         $file = "XCRUD";
+    } elseif ($_GET['pages'] == "pranikah") {
+        $page = "Bimbingan Pranikah";
+        $file = "XCRUD";
     } elseif ($_GET['pages'] == "rekomendasi") {
         $page = "Surat Rekomendasi Nikah";
         $file = "XCRUD";
@@ -93,6 +96,8 @@ $year = date('Y');
                         include 'pages/konsultasi.php';
                     } elseif ($_GET['pages'] == "pendaftaran") {
                         include 'pages/pendaftaran.php';
+                    } elseif ($_GET['pages'] == "pranikah") {
+                        include 'pages/pranikah.php';
                     } elseif ($_GET['pages'] == "rekomendasi") {
                         include 'pages/rekomendasi.php';
                     } elseif ($_GET['pages'] == "M-Kua") {
