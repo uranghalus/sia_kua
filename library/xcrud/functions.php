@@ -155,3 +155,4 @@ function jadwal_beforeinsert($postdata, $xcrud)
     $postdata->set('alamat_nikah', $data['alamat_nikah']);
     $postdata->set('status_jadwal', "PENDING");
 }
+
