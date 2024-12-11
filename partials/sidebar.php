@@ -63,11 +63,20 @@
                     <span>Pendaftaran Nikah</span>
                 </a>
             </li>
-            <li <?php if ($page == "Bimbingan Pranikah") : ?>class="active" <?php endif ?>>
-                <a href="dashboard?pages=pranikah">
-                    <i class="fa fa-book"></i>
-                    <span>Bimbingan Pranikah</span>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-book"></i><span>Data Pranikah</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
                 </a>
+                <ul class="treeview-menu">
+                    <?php if ($role == "ADMIN") : ?>
+                        <li><a href="dashboard?pages=pranikah"><i class="fa fa-circle-o"></i> Data Bimbingan</a></li>
+                    <?php endif ?>
+                    <!-- <li><a href="dashboard?pages=materi-bimbingan"><i class="fa fa-circle-o"></i> Materi Bimbingan</a></li> -->
+                    <li><a href="dashboard?pages=peserta-bimbingan"><i class="fa fa-circle-o"></i> Peserta Bimbingan</a></li>
+                </ul>
             </li>
             <li <?php if ($page == "Rekomendasi Nikah") : ?>class="active" <?php endif ?>>
                 <a href="dashboard?pages=rekomendasi">

@@ -5,14 +5,14 @@ include_once 'library/xcrud/functions.php';
 // echo Xcrud::load_css();
 // echo Xcrud::load_js();
 $xcrud = Xcrud::get_instance();
-$xcrud->table('bimbingan');
+$xcrud->table('sesi_bimbingan');
 $xcrud->unset_title();
 $xcrud->unset_csv();
 $xcrud->unset_print();
 $xcrud->unset_view();
-$xcrud->columns('deskripsi,created_at,updated_at', true);
-$xcrud->fields('created_at,updated_at', true);
-$xcrud->button('dashboard?pages=view-bimbingan&id_bimbingan={id}', 'View Bimbingan', 'fa fa-search', 'btn btn-info');
+$xcrud->columns('waktu,lokasi,link_meeting,deskripsi', true);
+$xcrud->fields('status', true);
+$xcrud->button('dashboard?pages=view-bimbingan&id_bimbingan={id_sesi}', 'View Bimbingan', 'glyphicon glyphicon-search', 'btn btn-info');
 // $xcrud->button('dashboard?pages=peserta-bimbingan&id_bimbingan={id}', 'Tambah Peserta Nikah', 'fa fa-user-plus', 'btn btn-secondrary');
 $crudrender = $xcrud->render(); ?>
 <div class="row">
