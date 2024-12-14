@@ -156,3 +156,83 @@ function jadwal_beforeinsert($postdata, $xcrud)
     $postdata->set('status_jadwal', "PENDING");
 }
 
+function peserta_callback($value, $field, $primary_key, $list, $xcrud)
+{
+    $id_user = $_SESSION['user-data']['nik'];
+    if ($id_user) {
+        return "<span class='label label-info'>$value</span>"; // Menambahkan label-info untuk highlight
+    } else {
+        return $value; // Jika tidak cocok, tampilkan nama normal
+    }
+}
+function sesi_callback($value, $field, $primary_key, $list, $xcrud)
+{
+    // Pastikan session dimulai
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    $host = 'localhost';
+    $username = 'root';
+    $password = '';
+    $dbname = 'db_kua';
+
+    // Membuat koneksi ke database
+    $db = new mysqli($host, $username, $password, $dbname);
+
+    // Cek apakah koneksi berhasil
+    if ($db->connect_error) {
+        die("Koneksi gagal: " . $db->connect_error);
+    }
+
+    // SQL Query yang benar
+    $sql = "
+    SELECT 
+        d.id_daftar, 
+        d.kewarganegaraan_calsu, 
+        d.nik_calsu, 
+        d.nama_calsu, 
+        d.nik_calis, 
+        d.nama_calis
+    FROM tbl_daftar_nikah d
+    LEFT JOIN peserta_bimbingan p ON d.id_daftar = p.id_daftar
+    WHERE p.id_peserta = ?
+    ";
+
+    // Persiapkan statement
+    $stmt = $db->prepare($sql);
+
+    // Bind parameter
+    $stmt->bind_param("i", $value);
+
+    // Eksekusi query
+    $stmt->execute();
+
+    // Ambil hasil
+    $result = $stmt->get_result();
+
+    // Menangani hasil
+    $output = "";
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            // Mengambil user_id dari session
+            $id_user = isset($_SESSION['user-data']['nik']) ? $_SESSION['user-data']['nik'] : null;
+
+            // Menampilkan hasil sesuai kondisi
+            if ($id_user) {
+                $output .= "<span class='label label-info'>" . $row['nama_calsu'] . " | " . $row['nik_calsu'] . "</span><br>"; // Menambahkan label-info untuk highlight
+            } else {
+                $output .= $row['nama_calsu'] . " | " . $row['nik_calsu'] . "<br>"; // Jika tidak cocok, tampilkan nama normal
+            }
+        }
+    } else {
+        $output = "Data tidak ditemukan.";
+    }
+
+    // Tutup koneksi
+    $stmt->close();
+    $db->close();
+
+    // Kembalikan output
+    return $output;
+}

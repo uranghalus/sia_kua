@@ -4,7 +4,6 @@ include 'library/xcrud/xcrud.php';
 include_once 'library/xcrud/functions.php';
 // echo Xcrud::load_css();
 // echo Xcrud::load_js();
-$id_user = $_SESSION['user-data']['nik'];
 $xcrud = Xcrud::get_instance();
 $xcrud->table('peserta_bimbingan');
 $xcrud->unset_title();
@@ -16,18 +15,9 @@ if ($role != "ADMIN") {
     $xcrud->unset_edit();
 
     // Menambahkan custom PHP untuk memeriksa apakah id_user cocok dengan id_daftar
-    $xcrud->column_callback('id_daftar', function ($value, $field, $primary_key) use ($id_user) {
-        // Cek jika primary_key yang terdaftar sama dengan id_user yang login
-        if ($id_user) {
-            return "<span class='label label-info'>$value</span>"; // Menambahkan label-info untuk highlight
-        } else {
-            return $value; // Jika tidak cocok, tampilkan nama normal
-        }
-    });
-    // $xcrud->button('verif_bimbingan?id_bimbingan={id_sesi}&jenis=terima', 'Terima Bimbingan', 'fa fa-check', 'btn btn-success');
-    // $xcrud->button('verif_bimbingan?id_bimbingan={id_sesi}&jenis=tolak', 'Tolak Bimbingan', 'fa fa-times', 'btn btn-danger');
-    $xcrud->button('scripts/verifikasi_bimbingan?id_bimbingan={id_sesi}&jenis=tolak', 'Tolak Bimbingan', 'fa fa-times', 'btn btn-danger', '', array('status_pendaftaran', '=', 'Menunggu'));
-    $xcrud->button('scripts/verifikasi_bimbingan?id_bimbingan={id_sesi}&jenis=terima', 'Terima Bimbingan', 'fa fa-check', 'btn btn-success', '', array('status_pendaftaran', '=', 'Menunggu'));
+    $xcrud->column_callback('id_daftar', 'peserta_callback');
+    $xcrud->button('scripts/verifikasi_bimbingan?id_peserta={id_peserta}&jenis=tolak', 'Tolak Bimbingan', 'fa fa-times', 'btn btn-danger', '', array('status_pendaftaran', '=', 'Menunggu'));
+    $xcrud->button('scripts/verifikasi_bimbingan?id_peserta={id_peserta}&jenis=terima', 'Terima Bimbingan', 'fa fa-check', 'btn btn-success', '', array('status_pendaftaran', '=', 'Menunggu'));
 }
 $xcrud->highlight('status_pendaftaran', '=', 'Diterima', '', 'alert-success');
 $xcrud->highlight('status_pendaftaran', '=', 'Ditolak', '', 'alert-danger');

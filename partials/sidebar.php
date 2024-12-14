@@ -74,8 +74,8 @@
                     <?php if ($role == "ADMIN") : ?>
                         <li><a href="dashboard?pages=pranikah"><i class="fa fa-circle-o"></i> Data Bimbingan</a></li>
                     <?php endif ?>
-                    <!-- <li><a href="dashboard?pages=materi-bimbingan"><i class="fa fa-circle-o"></i> Materi Bimbingan</a></li> -->
-                    <li><a href="dashboard?pages=peserta-bimbingan"><i class="fa fa-circle-o"></i> Peserta Bimbingan</a></li>
+                    <li><a href="dashboard?pages=absensi-bimbingan"><i class="fa fa-circle-o"></i> Absensi Bimbingan</a></li>
+                    <li><a href="dashboard?pages=jadwal-bimbingan"><i class="fa fa-circle-o"></i> Jadwal Bimbingan</a></li>
                 </ul>
             </li>
             <li <?php if ($page == "Rekomendasi Nikah") : ?>class="active" <?php endif ?>>
