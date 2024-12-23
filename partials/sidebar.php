@@ -92,6 +92,42 @@
             </li>
             <?php if ($role == "ADMIN") : ?>
                 <li class="header">Laporan</li>
+                <li <?php if ($page == "Laporan Data Penghulu") : ?>class="active" <?php endif ?>>
+                    <a href="dashboard?pages=l-penghulu">
+                        <i class="fa fa-file"></i>
+                        <span>Laporan Pendaftaran Nikah</span>
+                    </a>
+                </li>
+                <li <?php if ($page == "Laporan Status Pembayaran") : ?>class="active" <?php endif ?>>
+                    <a href="dashboard?pages=l-keuangan">
+                        <i class="fa fa-file"></i>
+                        <span>Laporan Status Pembayaran</span>
+                    </a>
+                </li>
+                <li <?php if ($page == "Laporan Usia Pasangan") : ?>class="active" <?php endif ?>>
+                    <a href="dashboard?pages=l-usia">
+                        <i class="fa fa-file"></i>
+                        <span>Laporan Usia Pasangan</span>
+                    </a>
+                </li>
+                <li <?php if ($page == "Laporan Jadwal Nikah") : ?>class="active" <?php endif ?>>
+                    <a href="dashboard?pages=l-jadwal">
+                        <i class="fa fa-file"></i>
+                        <span>Laporan Jadwal Nikah</span>
+                    </a>
+                </li>
+                <li <?php if ($page == "Laporan Kehadiran Bimbingan Pranikah") : ?>class="active" <?php endif ?>>
+                    <a href="dashboard?pages=l-absensi-pranikah">
+                        <i class="fa fa-file"></i>
+                        <span>Laporan Kehadiran Pranikah</span>
+                    </a>
+                </li>
+                <li <?php if ($page == "Laporan Bimbingan Pranikah") : ?>class="active" <?php endif ?>>
+                    <a href="dashboard?pages=l-bimbingan">
+                        <i class="fa fa-file"></i>
+                        <span>Laporan Bimbingan Pranikah</span>
+                    </a>
+                </li>
                 <li <?php if ($page == "Laporan Pendaftaran Nikah") : ?>class="active" <?php endif ?>>
                     <a href="dashboard?pages=l-daftar">
                         <i class="fa fa-file"></i>
