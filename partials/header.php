@@ -17,7 +17,7 @@
     <!-- jvectormap -->
     <link rel="stylesheet" href="assets/bower_components/jvectormap/jquery-jvectormap.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="assets/dist/css/AdminLTE.css">
+    <link rel="stylesheet" href="assets/dist/css/AdminLTE.min.css">
     <!-- sweetalert -->
     <link rel="stylesheet" href="assets/plugins/sweetalert2/sweetalert2.min.css">
     <!-- DataTables -->

@@ -95,7 +95,7 @@
                 <li <?php if ($page == "Laporan Data Penghulu") : ?>class="active" <?php endif ?>>
                     <a href="dashboard?pages=l-penghulu">
                         <i class="fa fa-file"></i>
-                        <span>Laporan Pendaftaran Nikah</span>
+                        <span>Laporan Data Penghulu</span>
                     </a>
                 </li>
                 <li <?php if ($page == "Laporan Status Pembayaran") : ?>class="active" <?php endif ?>>
@@ -104,12 +104,12 @@
                         <span>Laporan Status Pembayaran</span>
                     </a>
                 </li>
-                <li <?php if ($page == "Laporan Usia Pasangan") : ?>class="active" <?php endif ?>>
+                <!-- <li <?php if ($page == "Laporan Usia Pasangan") : ?>class="active" <?php endif ?>>
                     <a href="dashboard?pages=l-usia">
                         <i class="fa fa-file"></i>
                         <span>Laporan Usia Pasangan</span>
                     </a>
-                </li>
+                </li> -->
                 <li <?php if ($page == "Laporan Jadwal Nikah") : ?>class="active" <?php endif ?>>
                     <a href="dashboard?pages=l-jadwal">
                         <i class="fa fa-file"></i>
