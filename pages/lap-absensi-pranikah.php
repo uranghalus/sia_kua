@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="box box-success">
             <div class="box-header with-border">
-                <h3 class="box-title">Laporan Jadwal Pernikahan</h3>
+                <h3 class="box-title">Laporan Absensi Pranikah</h3>
             </div>
             <div class="box-body">
                 <form method="post">
@@ -13,7 +13,7 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="date" name="t_a" class="form-control pull-right">
+                                <input type="date" name="t_a" class="form-control pull-right" required>
                             </div>
                         </div>
                     </div>
@@ -24,7 +24,7 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="date" name="t_b" class="form-control pull-right">
+                                <input type="date" name="t_b" class="form-control pull-right" required>
                             </div>
                         </div>
                     </div>
@@ -45,25 +45,28 @@
     $tanggala = date('Y-m-d', strtotime($_POST["t_a"]));
     $tanggalb = date('Y-m-d', strtotime($_POST["t_b"]));
 
-    // Query data dari database
+    // Query data absensi pranikah
     $sql = "
         SELECT 
-            jd.id_jadwal AS no,
-            dn.id_daftar AS id_pendaftaran,
-            CONCAT(dn.nama_calsu, ' & ', dn.nama_calis) AS nama_catin,
-            jd.tgl_nikah AS tanggal_nikah,
-            jd.tempat_nikah AS tempat_nikah,
-            ph.nama_penghulu AS penghulu
+            ps.id_peserta AS no,
+            dn.nama_calsu AS nama_suami,
+            dn.nama_calis AS nama_istri,
+            sb.nama_sesi AS nama_sesi,
+            sb.tanggal AS tanggal_sesi,
+            ps.status_kehadiran AS status_kehadiran,
+            ps.sertifikat AS sertifikat
         FROM 
-            tbl_jadwal jd
+            peserta_sesi ps
         JOIN 
-            tbl_daftar_nikah dn ON jd.id_daftar_nikah = dn.id_daftar
+            peserta_bimbingan pb ON ps.id_peserta = pb.id_peserta
         JOIN 
-            tbl_penghulu ph ON jd.id_penghulu = ph.Nip
+            sesi_bimbingan sb ON ps.id_sesi = sb.id_sesi
+        JOIN 
+            tbl_daftar_nikah dn ON pb.id_daftar = dn.id_daftar
         WHERE 
-            jd.tgl_nikah BETWEEN '$tanggala' AND '$tanggalb'
+            sb.tanggal BETWEEN '$tanggala' AND '$tanggalb'
         ORDER BY 
-            jd.tgl_nikah ASC
+            sb.tanggal ASC
     ";
     $query = mysqli_query($connectdb, $sql);
     ?>
@@ -73,10 +76,10 @@
             <div class="box box-success">
                 <div class="box-header with-border">
                     <div class="col-xs-11">
-                        <h3 class="box-title">Rekap Laporan Jadwal Nikah</h3>
+                        <h3 class="box-title">Rekap Laporan Absensi Pranikah</h3>
                     </div>
                     <div class="col-xs-1">
-                        <a href="scripts/lap-jadwal?ta=<?= $tanggala ?>&tb=<?= $tanggalb ?>" class="btn btn-default"><i class="fa fa-print"></i> Cetak</a>
+                        <a href="scripts/lap-absensi?ta=<?= $tanggala ?>&tb=<?= $tanggalb ?>" class="btn btn-default"><i class="fa fa-print"></i> Cetak</a>
                     </div>
                 </div>
                 <div class="box-body">
@@ -84,11 +87,12 @@
                         <thead>
                             <tr>
                                 <th><b>No.</b></th>
-                                <th><b>Id Pendaftaran</b></th>
-                                <th><b>Nama Catin</b></th>
-                                <th><b>Tanggal Nikah</b></th>
-                                <th><b>Tempat Nikah</b></th>
-                                <th><b>Penghulu</b></th>
+                                <th><b>Nama Suami</b></th>
+                                <th><b>Nama Istri</b></th>
+                                <th><b>Nama Sesi</b></th>
+                                <th><b>Tanggal Sesi</b></th>
+                                <th><b>Status Kehadiran</b></th>
+                                <th><b>Sertifikat</b></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -97,16 +101,17 @@
                                 <?php while ($data = $query->fetch_assoc()) : ?>
                                     <tr>
                                         <td><?= $no++ ?></td>
-                                        <td><?= $data['id_pendaftaran'] ?></td>
-                                        <td><?= $data['nama_catin'] ?></td>
-                                        <td><?= $data['tanggal_nikah'] ?></td>
-                                        <td><?= $data['tempat_nikah'] ?></td>
-                                        <td><?= $data['penghulu'] ?></td>
+                                        <td><?= $data['nama_suami'] ?></td>
+                                        <td><?= $data['nama_istri'] ?></td>
+                                        <td><?= $data['nama_sesi'] ?></td>
+                                        <td><?= $data['tanggal_sesi'] ?></td>
+                                        <td><?= $data['status_kehadiran'] ?></td>
+                                        <td><?= $data['sertifikat'] ? 'Ya' : 'Tidak' ?></td>
                                     </tr>
                                 <?php endwhile; ?>
                             <?php else : ?>
                                 <tr>
-                                    <td colspan="6" class="text-center">Data tidak ditemukan</td>
+                                    <td colspan="7" class="text-center">Data tidak ditemukan</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2024 at 03:30 PM
+-- Generation Time: Jan 08, 2025 at 02:53 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -24,63 +24,15 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bimbingan`
---
-
-CREATE TABLE `bimbingan` (
-  `id` int(11) NOT NULL,
-  `nama_bimbingan` varchar(100) NOT NULL,
-  `deskripsi` text DEFAULT NULL,
-  `tanggal_mulai` date DEFAULT NULL,
-  `tanggal_selesai` date DEFAULT NULL,
-  `lokasi` varchar(255) DEFAULT NULL,
-  `kuota` int(11) DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `feedback_bimbingan`
 --
 
 CREATE TABLE `feedback_bimbingan` (
-  `id` int(11) NOT NULL,
-  `bimbingan_id` int(11) DEFAULT NULL,
-  `peserta_id` int(11) DEFAULT NULL,
+  `id_feedback` int(11) NOT NULL,
+  `id_sesi` int(11) NOT NULL,
+  `id_peserta` int(11) NOT NULL,
   `rating` int(11) DEFAULT NULL CHECK (`rating` between 1 and 5),
-  `komentar` text DEFAULT NULL,
-  `tanggal_feedback` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `jadwal_bimbingan`
---
-
-CREATE TABLE `jadwal_bimbingan` (
-  `id` int(11) NOT NULL,
-  `bimbingan_id` int(11) DEFAULT NULL,
-  `tanggal` date DEFAULT NULL,
-  `waktu_mulai` time DEFAULT NULL,
-  `waktu_selesai` time DEFAULT NULL,
-  `lokasi` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `kehadiran_peserta`
---
-
-CREATE TABLE `kehadiran_peserta` (
-  `id` int(11) NOT NULL,
-  `jadwal_id` int(11) DEFAULT NULL,
-  `peserta_id` int(11) DEFAULT NULL,
-  `status_kehadiran` enum('hadir','tidak hadir','izin') DEFAULT 'hadir',
-  `catatan` text DEFAULT NULL
+  `komentar` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -111,11 +63,86 @@ INSERT INTO `master_kua` (`id_`, `nama_kua`, `alamat`) VALUES
 --
 
 CREATE TABLE `materi_bimbingan` (
-  `id` int(11) NOT NULL,
-  `bimbingan_id` int(11) DEFAULT NULL,
-  `judul_materi` varchar(100) NOT NULL,
-  `deskripsi` text DEFAULT NULL
+  `id_materi` int(11) NOT NULL,
+  `judul_materi` varchar(255) NOT NULL,
+  `deskripsi` text DEFAULT NULL,
+  `file_materi` varchar(255) DEFAULT NULL,
+  `id_sesi` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `materi_bimbingan`
+--
+
+INSERT INTO `materi_bimbingan` (`id_materi`, `judul_materi`, `deskripsi`, `file_materi`, `id_sesi`) VALUES
+(1, 'Test', 'Testasd', 'ct6ybs7ssmgok0o44k.ct', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `peserta_bimbingan`
+--
+
+CREATE TABLE `peserta_bimbingan` (
+  `id_peserta` int(11) NOT NULL,
+  `id_daftar` varchar(30) NOT NULL,
+  `id_sesi` int(11) NOT NULL,
+  `status_pendaftaran` enum('Diterima','Ditolak','Menunggu') DEFAULT 'Menunggu',
+  `tanggal_daftar` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `peserta_bimbingan`
+--
+
+INSERT INTO `peserta_bimbingan` (`id_peserta`, `id_daftar`, `id_sesi`, `status_pendaftaran`, `tanggal_daftar`) VALUES
+(3, 'PN/01/2024-11-15/2024', 1, 'Diterima', '2024-12-13 16:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `peserta_sesi`
+--
+
+CREATE TABLE `peserta_sesi` (
+  `id_peserta_sesi` int(11) NOT NULL,
+  `id_sesi` int(11) NOT NULL,
+  `id_peserta` int(11) NOT NULL,
+  `status_kehadiran` enum('Hadir','Tidak Hadir') DEFAULT 'Tidak Hadir',
+  `sertifikat` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `peserta_sesi`
+--
+
+INSERT INTO `peserta_sesi` (`id_peserta_sesi`, `id_sesi`, `id_peserta`, `status_kehadiran`, `sertifikat`) VALUES
+(2, 1, 3, 'Hadir', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sesi_bimbingan`
+--
+
+CREATE TABLE `sesi_bimbingan` (
+  `id_sesi` int(11) NOT NULL,
+  `nama_sesi` varchar(255) NOT NULL,
+  `tanggal` date NOT NULL,
+  `waktu` time NOT NULL,
+  `lokasi` varchar(255) DEFAULT NULL,
+  `link_meeting` varchar(255) DEFAULT NULL,
+  `deskripsi` text DEFAULT NULL,
+  `kapasitas` int(11) NOT NULL,
+  `status` enum('Aktif','Selesai') DEFAULT 'Aktif'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sesi_bimbingan`
+--
+
+INSERT INTO `sesi_bimbingan` (`id_sesi`, `nama_sesi`, `tanggal`, `waktu`, `lokasi`, `link_meeting`, `deskripsi`, `kapasitas`, `status`) VALUES
+(1, 'Test 1', '2024-12-12', '09:00:00', 'Bumi', 'link-bokep', 'test', 25, 'Aktif');
 
 -- --------------------------------------------------------
 
@@ -131,6 +158,13 @@ CREATE TABLE `tbl_bukti_pembayaran` (
   `user_id` varchar(17) NOT NULL,
   `kode_transaksi` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_bukti_pembayaran`
+--
+
+INSERT INTO `tbl_bukti_pembayaran` (`id`, `id_registrasi`, `bukti_bayar`, `tanggal`, `user_id`, `kode_transaksi`) VALUES
+('KUA0111241501', 'PN/01/2024-11-15/2024', '16lfqs6l4gxwo8g0wg.png', '2024-11-15', '123123123123', 1);
 
 -- --------------------------------------------------------
 
@@ -174,6 +208,13 @@ CREATE TABLE `tbl_daftar_nikah` (
   `kode_transaksi` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `tbl_daftar_nikah`
+--
+
+INSERT INTO `tbl_daftar_nikah` (`id_daftar`, `kewarganegaraan_calsu`, `nik_calsu`, `nama_calsu`, `tempat_lahir_calsu`, `tanggal_lahir_calsu`, `umur_calsu`, `status_calsu`, `agama_calsu`, `alamat_calsu`, `pendidikan_terakhir_calsu`, `foto_calsu`, `kewarganegaraan_calis`, `nik_calis`, `nama_calis`, `tempat_lahir_calis`, `tanggal_lahir_calis`, `umur_calis`, `status_calis`, `agama_calis`, `alamat_calis`, `pendidikan_terakhir_calis`, `foto_calis`, `tempat_menikah`, `alamat_nikah`, `tanggal_nikah_m`, `jam_nikah`, `foto_latar_gandeng`, `berkas_diperlukan`, `status`, `tanggal_daftar`, `user_id`, `kode_transaksi`) VALUES
+('PN/01/2024-11-15/2024', 'WNI', '123123123', '123123123', '123123123123123', '2024-11-06', '123', 'Duda', 'Kristen Protestan', 'asdasd', 'SMA/Sederajat', '', 'WNI', 'asdasd123123123', '123123123', '123123123', '2024-11-01', '123', 'Janda', 'Islam', '123123123', 'Tidak Tamat Sekolah', '', 'Di Kua', '23eqweqwe', '2024-11-05', '05:00:00', '', '', 'Pendaftaran Berhasil', '2024-11-15', '123123123123', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -181,7 +222,7 @@ CREATE TABLE `tbl_daftar_nikah` (
 --
 
 CREATE TABLE `tbl_jadwal` (
-  `id_jadwal` varchar(15) NOT NULL,
+  `id_jadwal` int(11) NOT NULL,
   `id_daftar_nikah` varchar(30) NOT NULL,
   `tgl_nikah` varchar(40) NOT NULL,
   `jam_nikah` varchar(10) NOT NULL,
@@ -192,6 +233,13 @@ CREATE TABLE `tbl_jadwal` (
   `id_catin` varchar(16) NOT NULL,
   `kode_transaksi` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_jadwal`
+--
+
+INSERT INTO `tbl_jadwal` (`id_jadwal`, `id_daftar_nikah`, `tgl_nikah`, `jam_nikah`, `tempat_nikah`, `alamat_nikah`, `id_penghulu`, `status_jadwal`, `id_catin`, `kode_transaksi`) VALUES
+(1, 'PN/01/2024-11-15/2024', '2024-11-05', '05:00:00', 'Di Kua', '23eqweqwe', '2938409283123124', 'PENDING', '', 0);
 
 -- --------------------------------------------------------
 
@@ -205,6 +253,13 @@ CREATE TABLE `tbl_penerimaan_pendaftaran` (
   `tanggal` varchar(50) NOT NULL,
   `kode_transaksi` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_penerimaan_pendaftaran`
+--
+
+INSERT INTO `tbl_penerimaan_pendaftaran` (`nomor_surat_penerimaan`, `id_pendaftaran_nikah`, `tanggal`, `kode_transaksi`) VALUES
+('01/Kua.17.01-2/PN.01/11/2024', 'PN/01/2024-11-15/2024', '2024-11-15', 1);
 
 -- --------------------------------------------------------
 
@@ -293,6 +348,7 @@ CREATE TABLE `tbl_user` (
 --
 
 INSERT INTO `tbl_user` (`nik`, `email`, `password`, `level`) VALUES
+('123123123123', 'user@kua.com', '$2y$10$7pGwcC/EHjsewFcsdgrg4eEiZC7Xm3jm4XXAjC7EWj9vfT01fPHa2', 'MASYARAKAT'),
 ('1234567890', 'adminkua@mail.com', '$2y$10$wQsDeHkG8h1zo5B283Q6B.bYUCkMeJCXr8Ky9TlQmeJ.2Si6XvPXS', 'ADMIN');
 
 -- --------------------------------------------------------
@@ -306,6 +362,7 @@ CREATE TABLE `user_detail` (
   `nik` varchar(16) NOT NULL,
   `nama` varchar(200) NOT NULL,
   `alamat` text NOT NULL,
+  `no_hp` varchar(15) NOT NULL,
   `pekerjaan` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -313,37 +370,20 @@ CREATE TABLE `user_detail` (
 -- Dumping data for table `user_detail`
 --
 
-INSERT INTO `user_detail` (`id`, `nik`, `nama`, `alamat`, `pekerjaan`) VALUES
-(3, '1234567890', 'Muhammad Zainudin', 'bumi', 'pegasus'),
-(9, '1342343436345345', 'Burhan Kece', 'Jln wildansari I G no 44', 'Freelance');
+INSERT INTO `user_detail` (`id`, `nik`, `nama`, `alamat`, `no_hp`, `pekerjaan`) VALUES
+(3, '1234567890', 'Muhammad Zainudin', 'bumi', '', 'pegasus'),
+(9, '1342343436345345', 'Burhan Kece', 'Jln wildansari I G no 44', '', 'Freelance'),
+(10, '123123123123', 'asd', 'bumi', '', 'pegasus');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `bimbingan`
---
-ALTER TABLE `bimbingan`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `feedback_bimbingan`
 --
 ALTER TABLE `feedback_bimbingan`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `jadwal_bimbingan`
---
-ALTER TABLE `jadwal_bimbingan`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `kehadiran_peserta`
---
-ALTER TABLE `kehadiran_peserta`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id_feedback`);
 
 --
 -- Indexes for table `master_kua`
@@ -355,7 +395,25 @@ ALTER TABLE `master_kua`
 -- Indexes for table `materi_bimbingan`
 --
 ALTER TABLE `materi_bimbingan`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id_materi`);
+
+--
+-- Indexes for table `peserta_bimbingan`
+--
+ALTER TABLE `peserta_bimbingan`
+  ADD PRIMARY KEY (`id_peserta`);
+
+--
+-- Indexes for table `peserta_sesi`
+--
+ALTER TABLE `peserta_sesi`
+  ADD PRIMARY KEY (`id_peserta_sesi`);
+
+--
+-- Indexes for table `sesi_bimbingan`
+--
+ALTER TABLE `sesi_bimbingan`
+  ADD PRIMARY KEY (`id_sesi`);
 
 --
 -- Indexes for table `tbl_bukti_pembayaran`
@@ -422,28 +480,10 @@ ALTER TABLE `user_detail`
 --
 
 --
--- AUTO_INCREMENT for table `bimbingan`
---
-ALTER TABLE `bimbingan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `feedback_bimbingan`
 --
 ALTER TABLE `feedback_bimbingan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `jadwal_bimbingan`
---
-ALTER TABLE `jadwal_bimbingan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `kehadiran_peserta`
---
-ALTER TABLE `kehadiran_peserta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_feedback` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `master_kua`
@@ -455,7 +495,31 @@ ALTER TABLE `master_kua`
 -- AUTO_INCREMENT for table `materi_bimbingan`
 --
 ALTER TABLE `materi_bimbingan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_materi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `peserta_bimbingan`
+--
+ALTER TABLE `peserta_bimbingan`
+  MODIFY `id_peserta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `peserta_sesi`
+--
+ALTER TABLE `peserta_sesi`
+  MODIFY `id_peserta_sesi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `sesi_bimbingan`
+--
+ALTER TABLE `sesi_bimbingan`
+  MODIFY `id_sesi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tbl_jadwal`
+--
+ALTER TABLE `tbl_jadwal`
+  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_pesan`
@@ -467,7 +531,7 @@ ALTER TABLE `tbl_pesan`
 -- AUTO_INCREMENT for table `user_detail`
 --
 ALTER TABLE `user_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

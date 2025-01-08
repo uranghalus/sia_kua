@@ -57,6 +57,12 @@ if (isset($_GET['pages'])) {
     } elseif ($_GET['pages'] == "l-jadwal") {
         $page = "Laporan Jadwal Pernikahan";
         $file = "NON";
+    } elseif ($_GET['pages'] == "l-absensi-pranikah") {
+        $page = "Laporan Absensi Pranikah";
+        $file = "NON";
+    } elseif ($_GET['pages'] == "l-bimbingan") {
+        $page = "Laporan Sesi Bimbingan";
+        $file = "NON";
     } elseif ($_GET['pages'] == "l-penghulu") {
         $page = "Laporan Penghulu";
         $file = "NON";
@@ -144,6 +150,10 @@ $year = date('Y');
                         include 'pages/lap-penghulu.php';
                     } elseif ($_GET['pages'] == "l-rekomendasi") {
                         include 'pages/lap-rekomendasi.php';
+                    } elseif ($_GET['pages'] == "l-absensi-pranikah") {
+                        include 'pages/lap-absensi-pranikah.php';
+                    } elseif ($_GET['pages'] == "l-bimbingan") {
+                        include 'pages/lap-sesi-bimbingan.php';
                     } elseif ($_GET['pages'] == "create-pesan") {
                         include 'pages/create-pesan.php';
                     } elseif ($_GET['pages'] == "pesan-keluar") {
